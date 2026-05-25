@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Seats - CineBook</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .screen {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 100%);
+            height: 60px;
+            width: 100%;
+            border-top-left-radius: 50% 10px;
+            border-top-right-radius: 50% 10px;
+            margin-bottom: 3rem;
+            position: relative;
+            transform: perspective(200px) rotateX(-5deg);
+        }
+        .screen::after {
+            content: "SCREEN";
+            color: rgba(255,255,255,0.6);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            letter-spacing: 5px;
+            font-size: 0.8rem;
+        }
+        .seats-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .seat {
+            width: 100%;
+            padding-bottom: 100%; /* square */
+            background-color: var(--seat-available);
+            border-radius: 8px 8px 4px 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .seat::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 20%;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
+        .seat:hover:not(.booked) {
+            transform: scale(1.1);
+            background-color: rgba(255,255,255,0.3);
+        }
+        .seat.selected {
+            background-color: var(--seat-selected);
+            box-shadow: 0 0 10px var(--seat-selected);
+        }
+        .seat.booked {
+            background-color: var(--seat-booked);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .seat-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container animate-fade-in" style="display: flex; gap: 2rem;">
+        
+        <div class="glass-card" style="flex: 2;">
+            <div th:if="${param.error}" style="background: rgba(220,20,60,0.2); padding: 1rem; border-left: 4px solid var(--error); margin-bottom: 1rem; color: #ff9999;">
+                Booking failed. Please try again.
+            </div>
+
+            <h2 style="text-align: center; margin-bottom: 2rem;">Select Your Seats</h2>
+            <div class="screen"></div>
+            
+            <form id="bookingForm" th:action="@{/booking/confirm}" method="post">
+                <input type="hidden" name="showId" th:value="${show.id}">
+                
+                <div class="seats-container">
+                    <th:block th:each="seat : ${seats}">
+                        <label>
+                            <input type="checkbox" name="seatNumbers" th:value="${seat.seatNumber}" th:disabled="${seat.booked}" onchange="updateSummary()">
+                            <div th:class="${seat.booked} ? 'seat booked' : 'seat'" th:title="${seat.seatNumber}"></div>
+                        </label>
+                    </th:block>
+                </div>
+            </form>
+
+            <div class="seat-legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: var(--seat-available)"></div> Available
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: var(--seat-selected)"></div> Selected
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: var(--seat-booked)"></div> Booked
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="flex: 1; height: fit-content; position: sticky; top: 100px;">
+            <h3 style="border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1rem;">Booking Summary</h3>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;" th:text="${show.movie.title}">Movie</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;" th:text="${show.theater.name}">Theater</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;" th:text="${#temporals.format(show.showTime, 'dd MMM yyyy, hh:mm a')}">Date & Time</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Selected Seats</span>
+                <span id="selectedSeatsList" style="font-weight: 600;">None</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border);">
+                <span style="color: var(--text-secondary);">Price per Ticket</span>
+                <span style="font-weight: 600;" th:text="'$' + ${#numbers.formatDecimal(show.ticketPrice, 1, 2)}" id="pricePerTicket" th:data-price="${show.ticketPrice}">$0.00</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; font-size: 1.2rem; font-weight: 800;">
+                <span>Total Amount</span>
+                <span id="totalPrice" style="color: var(--primary-color);">$0.00</span>
+            </div>
+
+            <button type="button" onclick="document.getElementById('bookingForm').submit()" class="btn" style="width: 100%; font-size: 1.1rem;" id="bookBtn" disabled>
+                Proceed to Checkout
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        function updateSummary() {
+            const checkboxes = document.querySelectorAll('input[name="seatNumbers"]:checked');
+            const selectedSeatsList = document.getElementById('selectedSeatsList');
+            const totalPriceEl = document.getElementById('totalPrice');
+            const bookBtn = document.getElementById('bookBtn');
+            const pricePerTicket = parseFloat(document.getElementById('pricePerTicket').getAttribute('data-price'));
+
+            // visual toggle for seats
+            document.querySelectorAll('input[name="seatNumbers"]').forEach(cb => {
+                const seatDiv = cb.nextElementSibling;
+                if (!seatDiv.classList.contains('booked')) {
+                    if (cb.checked) {
+                        seatDiv.classList.add('selected');
+                    } else {
+                        seatDiv.classList.remove('selected');
+                    }
+                }
+            });
+
+            if (checkboxes.length > 0) {
+                const seats = Array.from(checkboxes).map(cb => cb.value).join(', ');
+                selectedSeatsList.textContent = seats;
+                totalPriceEl.textContent = '$' + (checkboxes.length * pricePerTicket).toFixed(2);
+                bookBtn.disabled = false;
+            } else {
+                selectedSeatsList.textContent = 'None';
+                totalPriceEl.textContent = '$0.00';
+                bookBtn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>

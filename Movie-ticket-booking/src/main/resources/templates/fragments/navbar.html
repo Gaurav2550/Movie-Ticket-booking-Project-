@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar" th:fragment="navbar">
+    <a href="/" class="brand">CineBook</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <th:block th:if="${session.loggedInUser == null}">
+            <a href="/login" class="btn btn-outline" style="margin-left: 1rem;">Login</a>
+            <a href="/register" class="btn" style="margin-left: 1rem;">Sign Up</a>
+        </th:block>
+        <th:block th:if="${session.loggedInUser != null}">
+            <a href="/booking/history">My Tickets</a>
+            <span style="margin-left: 1rem; color: var(--text-secondary);">Welcome, <span th:text="${session.loggedInUser.username}">User</span></span>
+            <a href="/logout" class="btn btn-outline" style="margin-left: 1rem;">Logout</a>
+        </th:block>
+    </div>
+</nav>
+</body>
+</html>

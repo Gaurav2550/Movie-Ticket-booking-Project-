@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - CineBook</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="auth-container animate-fade-in">
+        <div class="glass-card">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Join CineBook today</p>
+            </div>
+            
+            <div th:if="${error}" style="background: rgba(220, 20, 60, 0.2); border-left: 4px solid var(--error); padding: 1rem; margin-bottom: 1.5rem; color: #ff9999;">
+                <p th:text="${error}"></p>
+            </div>
+
+            <form th:action="@{/register}" method="post">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required minlength="3" placeholder="Choose a username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required minlength="6" placeholder="Create a password (min 6 chars)">
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Sign Up</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary);">
+                Already have an account? <a href="/login" style="color: var(--primary-color); text-decoration: none;">Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

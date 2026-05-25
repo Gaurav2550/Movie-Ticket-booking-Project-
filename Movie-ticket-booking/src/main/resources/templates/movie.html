@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${movie.title} + ' - CineBook'">Movie Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container animate-fade-in">
+        <div class="glass-card" style="display: flex; gap: 3rem; margin-top: 2rem;">
+            <img th:src="${movie.posterUrl}" alt="Poster" style="width: 300px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            
+            <div style="flex-grow: 1;">
+                <h1 th:text="${movie.title}" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Movie Title</h1>
+                <div style="color: var(--text-secondary); margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                    <span th:text="${movie.genre}">Genre</span>
+                    <span>•</span>
+                    <span th:text="${movie.durationMinutes} + ' mins'">Duration</span>
+                    <span>•</span>
+                    <span th:text="${movie.language}">Language</span>
+                </div>
+                
+                <h3 style="margin-bottom: 0.5rem;">Synopsis</h3>
+                <p th:text="${movie.description}" style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.8;">Description</p>
+
+                <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem;">Available Shows</h3>
+                
+                <div th:if="${#lists.isEmpty(shows)}" style="color: var(--text-secondary); padding: 1rem 0;">
+                    No shows available for this movie at the moment.
+                </div>
+                
+                <div th:unless="${#lists.isEmpty(shows)}" style="display: grid; gap: 1rem; margin-top: 1rem;">
+                    <div th:each="show : ${shows}" style="background: rgba(255,255,255,0.03); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong th:text="${show.theater.name}" style="display: block; font-size: 1.1rem; color: var(--primary-color);">Theater Name</strong>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;" th:text="${#temporals.format(show.showTime, 'dd MMM yyyy, hh:mm a')}">Time</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;" th:text="'$' + ${#numbers.formatDecimal(show.ticketPrice, 1, 2)}">Price</div>
+                            <a th:href="@{/shows/{id}(id=${show.id})}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Select Seats</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

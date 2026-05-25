@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmed - CineBook</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container animate-fade-in" style="max-width: 600px; margin-top: 5rem;">
+        <div class="glass-card" style="text-align: center; border-top: 4px solid var(--success);">
+            
+            <div style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;">
+                ✓
+            </div>
+            
+            <h1 style="margin-bottom: 0.5rem; color: var(--success);">Booking Confirmed!</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Thank you for your purchase.</p>
+            
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; text-align: left; margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem; border-bottom: 1px dashed var(--glass-border); padding-bottom: 0.5rem;">Ticket Details #<span th:text="${ticket.id}">000</span></h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase;">Movie</p>
+                        <p style="font-weight: 600;" th:text="${ticket.show.movie.title}">Movie Name</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase;">Theater</p>
+                        <p style="font-weight: 600;" th:text="${ticket.show.theater.name}">Theater Name</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase;">Date & Time</p>
+                        <p style="font-weight: 600;" th:text="${#temporals.format(ticket.show.showTime, 'dd MMM yyyy, hh:mm a')}">Time</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase;">Seats</p>
+                        <p style="font-weight: 600; color: var(--primary-color);" th:text="${#strings.listJoin(ticket.seatNumbers, ', ')}">A1, A2</p>
+                    </div>
+                    <div style="grid-column: span 2; border-top: 1px dashed var(--glass-border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <span style="color: var(--text-secondary);">Total Paid:</span>
+                        <span style="font-size: 1.5rem; font-weight: 800; float: right;" th:text="'$' + ${#numbers.formatDecimal(ticket.totalPrice, 1, 2)}">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="/" class="btn btn-outline">Back to Home</a>
+                <a href="/booking/history" class="btn">View All Tickets</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

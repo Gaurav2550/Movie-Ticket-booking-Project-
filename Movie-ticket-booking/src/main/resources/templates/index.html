@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CineBook - Now Showing</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container animate-fade-in">
+        <div style="margin-bottom: 3rem; text-align: center;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Welcome to <span style="color: var(--primary-color);">CineBook</span></h1>
+            <p style="color: var(--text-secondary); font-size: 1.2rem;">Book tickets for the latest movies playing near you.</p>
+        </div>
+
+        <div class="movie-grid">
+            <div class="movie-card" th:each="movie : ${movies}" th:onclick="|window.location.href='/movies/${movie.id}'|">
+                <img th:src="${movie.posterUrl}" alt="Movie Poster" class="movie-poster">
+                <div class="movie-info">
+                    <h3 class="movie-title" th:text="${movie.title}">Movie Title</h3>
+                    <p class="movie-genre" th:text="${movie.genre} + ' • ' + ${movie.durationMinutes} + ' mins'">Genre • Duration</p>
+                    <a th:href="@{/movies/{id}(id=${movie.id})}" class="btn" style="width: 100%;">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
