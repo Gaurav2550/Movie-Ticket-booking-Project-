@@ -1,20 +1,157 @@
-<<<<<<< HEAD
-# React + Vite
+  # 🎟 Movie Ticket Booking Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack Movie Ticket Booking Application that allows users to browse movies, check show timings, and book tickets online with a smooth and responsive user experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+* 🎬 Browse latest movies
+* 🏢 View theatres and show timings
+* 🎟 Book movie tickets online
+* 💺 Seat selection system
+* 🔍 Search movies by name
+* 📱 Fully responsive design
+* 🔐 User authentication and login
+* 🧾 Booking confirmation system
+* ⚡ Fast and user-friendly interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-# Movie-Ticket-booking-Project-
->>>>>>> 84876aa3942d0bf932c837573a6f70ccf8395424
+### Frontend
+
+* React.js
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap / Tailwind CSS
+
+### Backend
+
+* Spring Boot
+* Java
+* REST APIs
+
+### Database
+
+* MySQL
+
+### Tools
+
+* Git
+* GitHub
+* Postman
+* VS Code
+
+---
+
+## 📂 Project Structure
+
+```bash
+Movie-Ticket-Booking/
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── backend/
+│   ├── src/
+│   ├── pom.xml
+│   └── application.properties
+│
+└── README.md
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/your-username/Movie-Ticket-Booking.git
+```
+
+---
+
+### 2️⃣ Backend Setup
+
+```bash
+cd backend
+```
+
+Run the Spring Boot application.
+
+---
+
+### 3️⃣ Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
+## 🔗 API Endpoints
+
+| Method | Endpoint       | Description         |
+| ------ | -------------- | ------------------- |
+| GET    | `/movies`      | Fetch all movies    |
+| GET    | `/movies/{id}` | Fetch movie details |
+| POST   | `/book-ticket` | Book movie ticket   |
+| GET    | `/shows`       | Fetch show timings  |
+
+---
+
+## 📸 Screenshots
+
+### Home Page
+
+Add screenshot here
+
+### Movie Details Page
+
+Add screenshot here
+
+### Seat Booking Page
+
+Add screenshot here
+
+---
+
+## 🎯 Learning Outcomes
+
+* REST API development
+* Frontend-backend integration
+* Database management using MySQL
+* Authentication and authorization
+* Responsive UI design
+* Seat booking logic implementation
+
+---
+
+## 🔮 Future Enhancements
+
+* Online payment integration
+* Movie recommendations
+* Email ticket confirmation
+* Admin dashboard
+* Booking history
+* Dark mode support
+
+---
+
+## 👨‍💻 Author
+
+**Gaurav Thombare**
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub.
