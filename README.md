@@ -108,22 +108,6 @@ npm start
 
 ---
 
-## 📸 Screenshots
-
-### Home Page
-
-Add screenshot here
-
-### Movie Details Page
-
-Add screenshot here
-
-### Seat Booking Page
-
-Add screenshot here
-
----
-
 ## 🎯 Learning Outcomes
 
 * REST API development
